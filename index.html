@@ -1,81 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wallcool</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Best Collection for Hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0a0a0a;color:#fff;overflow-x:hidden}
+
+/* HEADER */
+.wrap{max-width:980px;margin:0 auto;padding:50px 16px 70px}
+.eyebrow{text-align:center;font-size:11px;letter-spacing:0.16em;color:#888;text-transform:uppercase;margin-bottom:12px}
+.main-title{text-align:center;font-size:clamp(30px,6vw,58px);font-weight:900;line-height:1.05;margin-bottom:14px;background:linear-gradient(135deg,#fff 30%,#aaa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{text-align:center;font-size:15px;color:#666;line-height:1.7;margin-bottom:40px}
+
+/* PILLS */
+.filters{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:44px}
+.pill{border:1.5px solid #333;border-radius:999px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;background:transparent;color:#aaa;transition:all .2s}
+.pill.active,.pill:hover{background:#fff;color:#000;border-color:#fff}
+.view-more-btn{border:1.5px solid #555;border-radius:999px;padding:8px 20px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#aaa;white-space:nowrap;transition:all .2s}
+.view-more-btn:hover{border-color:#fff;color:#fff}
+
+/* CAROUSEL */
+.carousel-wrap{overflow:hidden;padding:24px 0 32px}
+.track{display:flex;gap:18px;align-items:center;justify-content:center}
+.card{flex-shrink:0;border-radius:22px;overflow:hidden;position:relative;cursor:pointer;transition:all .45s cubic-bezier(.4,0,.2,1)}
+.card.center{width:clamp(210px,36vw,300px);height:clamp(270px,44vw,390px);z-index:2;transform:scale(1.1);box-shadow:0 24px 70px rgba(0,0,0,0.7)}
+.card.side{width:clamp(140px,24vw,200px);height:clamp(190px,32vw,290px);z-index:1;opacity:0.65}
+.card.far{width:clamp(90px,16vw,145px);height:clamp(130px,22vw,210px);z-index:0;opacity:0.35}
+.card img{width:100%;height:100%;object-fit:cover;display:block}
+.card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 55%,transparent 100%)}
+.hero-badge{position:absolute;top:12px;left:12px;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
+.hero-label{position:absolute;bottom:14px;left:14px;right:14px}
+.hero-name{font-size:18px;font-weight:800;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.5)}
+.hero-tagline{font-size:11px;color:rgba(255,255,255,0.65);margin-top:3px}
+.card.side .hero-label,.card.far .hero-label,.card.side .hero-badge,.card.far .hero-badge{display:none}
+
+/* NAV */
+.nav-row{display:flex;justify-content:center;gap:14px;margin-top:8px}
+.nav-btn{width:42px;height:42px;border-radius:50%;border:1.5px solid #333;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;transition:all .2s}
+.nav-btn:hover{border-color:#fff;background:#fff;color:#000}
+.nav-btn svg{width:16px;height:16px}
+
+/* DIVIDER */
+.divider{border:none;border-top:1px solid #1e1e1e;margin:64px 0 48px}
+
+/* BEST SELLING */
+.section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.section-title{font-size:clamp(22px,4vw,36px);font-weight:800}
+.section-sub{font-size:13px;color:#666;margin-top:5px}
+.see-all{font-size:13px;font-weight:600;color:#aaa;cursor:pointer;border:1.5px solid #333;border-radius:999px;padding:7px 18px;background:transparent;transition:all .2s}
+.see-all:hover{color:#fff;border-color:#fff}
+
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px}
+.product-card{background:#111;border:1px solid #1e1e1e;border-radius:18px;overflow:hidden;transition:all .3s;cursor:pointer}
+.product-card:hover{transform:translateY(-7px);border-color:#333;box-shadow:0 20px 50px rgba(0,0,0,0.5)}
+.product-img-wrap{position:relative;overflow:hidden}
+.product-img{width:100%;height:200px;object-fit:cover;display:block;transition:transform .4s}
+.product-card:hover .product-img{transform:scale(1.05)}
+.product-hero-strip{position:absolute;top:0;left:0;right:0;height:3px}
+.product-info{padding:16px}
+.product-hero-tag{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px}
+.product-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.4}
+.product-bottom{display:flex;align-items:center;justify-content:space-between}
+.product-price{font-size:16px;font-weight:800;color:#fff}
+.buy-btn{border:none;border-radius:999px;padding:7px 15px;font-size:12px;font-weight:700;cursor:pointer;color:#000;transition:all .2s}
+.buy-btn:hover{opacity:0.85;transform:scale(1.04)}
+
+@media(max-width:600px){
+  .card.far{display:none}
+  .card.side{width:clamp(120px,30vw,170px);height:clamp(160px,38vw,230px)}
+  .card.center{width:clamp(185px,50vw,240px);height:clamp(240px,62vw,320px)}
+  .product-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .product-img{height:150px}
+  .section-header{flex-direction:column;align-items:flex-start}
+}
+</style>
 </head>
-
 <body>
+<div class="wrap">
 
-<!-- 🔥 Announcement -->
-<div class="announcement">
-🔥 Free COD on All Orders | Premium Wooden Frames
+  <p class="eyebrow">Gallery</p>
+  <h1 class="main-title">Best Collection for Hero</h1>
+  <p class="subtitle">Explore the mightiest heroes of the Marvel universe —<br>legends captured through every frame.</p>
+
+  <div class="filters">
+    <button class="pill active" onclick="setFilter(this,'all')">All Heroes</button>
+    <button class="pill" onclick="setFilter(this,'iron-man')">Iron Man</button>
+    <button class="pill" onclick="setFilter(this,'spider-man')">Spider-Man</button>
+    <button class="pill" onclick="setFilter(this,'thor')">Thor</button>
+    <button class="pill" onclick="setFilter(this,'captain-america')">Captain America</button>
+    <button class="pill" onclick="setFilter(this,'doctor-strange')">Doctor Strange</button>
+    <button class="pill" onclick="setFilter(this,'hulk')">Hulk</button>
+    <button class="view-more-btn">View More →</button>
+  </div>
+
+  <div class="carousel-wrap">
+    <div class="track" id="track"></div>
+  </div>
+  <div class="nav-row">
+    <button class="nav-btn" onclick="move(-1)" aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="nav-btn" onclick="move(1)" aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg>
+    </button>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Best Selling Products</h2>
+      <p class="section-sub">Top picks from our Marvel hero merchandise</p>
+    </div>
+    <button class="see-all">See All →</button>
+  </div>
+  <div class="product-grid" id="product-grid"></div>
+
 </div>
+<script>
+const heroes = [
+  {
+    id:'iron-man',
+    name:'Iron Man',
+    tagline:'Genius. Billionaire. Avenger.',
+    color:'#e53935',
+    badge:'#b71c1c',
+    // Red/gold tech themed image
+    img:'https://images.unsplash.com/photo-1518770660439-4636190af475?w=700&auto=format&fit=crop',
+  },
+  {
+    id:'spider-man',
+    name:'Spider-Man',
+    tagline:'Your Friendly Neighbourhood Hero.',
+    color:'#e53935',
+    badge:'#b71c1c',
+    // Red/blue city night image
+    img:'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=700&auto=format&fit=crop',
+  },
+  {
+    id:'thor',
+    name:'Thor',
+    tagline:'God of Thunder. Son of Odin.',
+    color:'#1565c0',
+    badge:'#0d47a1',
+    // Lightning / dramatic sky
+    img:'https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=700&auto=format&fit=crop',
+  },
+  {
+    id:'captain-america',
+    name:'Captain America',
+    tagline:'I can do this all day.',
+    color:'#1565c0',
+    badge:'#0d47a1',
+    // Blue patriotic / shield-like
+    img:'https://images.unsplash.com/photo-1569701813229-33284b643e3c?w=700&auto=format&fit=crop',
+  },
+  {
+    id:'doctor-strange',
+    name:'Doctor Strange',
+    tagline:'Master of the Mystic Arts.',
+    color:'#6a1b9a',
+    badge:'#4a148c',
+    // Purple mystic / cosmic
+    img:'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=700&auto=format&fit=crop',
+  },
+  {
+    id:'hulk',
+    name:'Hulk',
+    tagline:'Hulk Smash!',
+    color:'#2e7d32',
+    badge:'#1b5e20',
+    // Green forest / powerful nature
+    img:'https://images.unsplash.com/photo-1511497584788-876760111969?w=700&auto=format&fit=crop',
+  },
+];
 
-<!-- 🎯 Hero -->
-<section class="hero">
-  <h1>Upgrade Your Walls</h1>
-  <p>Premium Wooden Anime Frames</p>
-  <div class="btns">
-    <button>Shop Now</button>
-    <button class="outline">Explore</button>
-  </div>
-</section>
+const products = [
+  {
+    hero:'Iron Man', tag:'iron-man', color:'#e53935',
+    name:'Arc Reactor Glow Tee', price:'₹999',
+    img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&auto=format&fit=crop'
+  },
+  {
+    hero:'Spider-Man', tag:'spider-man', color:'#e53935',
+    name:'Web Slinger Hoodie', price:'₹1,499',
+    img:'https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=500&auto=format&fit=crop'
+  },
+  {
+    hero:'Thor', tag:'thor', color:'#1565c0',
+    name:'Thunder God Cap', price:'₹599',
+    img:'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=500&auto=format&fit=crop'
+  },
+  {
+    hero:'Captain America', tag:'captain-america', color:'#1565c0',
+    name:'Shield Warrior Backpack', price:'₹1,299',
+    img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop'
+  },
+  {
+    hero:'Doctor Strange', tag:'doctor-strange', color:'#6a1b9a',
+    name:'Mystic Sling Ring Necklace', price:'₹449',
+    img:'https://images.unsplash.com/photo-1611085583191-a3b181a88552?w=500&auto=format&fit=crop'
+  },
+  {
+    hero:'Hulk', tag:'hulk', color:'#2e7d32',
+    name:'Smash Strength Gym Bag', price:'₹899',
+    img:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop'
+  },
+];
 
-<!-- 🎁 Offers -->
-<section class="offers">
-  <div class="card">🎁 20% OFF</div>
-  <div class="card">🚚 Free Delivery</div>
-  <div class="card">💥 Buy 2 Get 1</div>
-</section>
+let cur = 0;
+let activeFilter = 'all';
+let filteredHeroes = [...heroes];
 
-<!-- 🚀 New Launch -->
-<section class="launch">
-  <h2>New Anime Drops 🚀</h2>
-  <div class="slider">
-    <div class="item">Naruto</div>
-    <div class="item">One Piece</div>
-    <div class="item">AOT</div>
-    <div class="item">Demon Slayer</div>
-    <div class="item">JJK</div>
-  </div>
-</section>
+function render() {
+  const track = document.getElementById('track');
+  track.innerHTML = '';
+  if (!filteredHeroes.length) {
+    track.innerHTML = '<p style="color:#555;text-align:center;padding:40px">No heroes found.</p>';
+    return;
+  }
+  const positions = ['far','side','center','side','far'];
+  const total = filteredHeroes.length;
+  for (let i = 0; i < 5; i++) {
+    let idx = ((cur - 2 + i) % total + total) % total;
+    let hero = filteredHeroes[idx];
+    let card = document.createElement('div');
+    card.className = 'card ' + positions[i];
 
-<!-- ⭐ Features -->
-<section class="features">
-  <div>🚚 Free COD</div>
-  <div>🪵 Premium Wood</div>
-  <div>⚡ Fast Delivery</div>
-  <div>🎨 HD Print</div>
-</section>
+    let img = document.createElement('img');
+    img.src = hero.img;
+    img.alt = hero.name;
+    card.appendChild(img);
 
-<!-- 🎮 Collection -->
-<section class="collection">
-  <h2>Anime Collection</h2>
+    let overlay = document.createElement('div');
+    overlay.className = 'card-overlay';
+    card.appendChild(overlay);
 
-  <div class="slider big">
-    <div class="item big-card">
-      <img src="https://i.pinimg.com/564x/5f/3e/5f/5f3e5f.jpg">
-      <p>Naruto Frame</p>
-      <a href="https://wa.me/91XXXXXXXXXX?text=I want Naruto Frame">Buy</a>
+    if (positions[i] === 'center') {
+      let badge = document.createElement('div');
+      badge.className = 'hero-badge';
+      badge.style.background = hero.badge;
+      badge.style.color = '#fff';
+      badge.textContent = hero.id.replace('-',' ').toUpperCase();
+      card.appendChild(badge);
+
+      let label = document.createElement('div');
+      label.className = 'hero-label';
+      label.innerHTML = `<div class="hero-name">${hero.name}</div><div class="hero-tagline">${hero.tagline}</div>`;
+      card.appendChild(label);
+
+      // Colored border glow
+      card.style.boxShadow = `0 24px 70px rgba(0,0,0,0.7), 0 0 0 2px ${hero.color}55`;
+    }
+
+    const clickIdx = idx;
+    card.addEventListener('click', () => { cur = clickIdx; render(); });
+    track.appendChild(card);
+  }
+}
+
+function renderProducts(filter) {
+  const grid = document.getElementById('product-grid');
+  const list = filter === 'all' ? products : products.filter(p => p.tag === filter);
+  if (!list.length) {
+    grid.innerHTML = '<p style="color:#555;grid-column:1/-1;text-align:center;padding:30px">No products yet.</p>';
+    return;
+  }
+  grid.innerHTML = list.map(p => `
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <img class="product-img" src="${p.img}" alt="${p.name}" />
+        <div class="product-hero-strip" style="background:${p.color}"></div>
+      </div>
+      <div class="product-info">
+        <div class="product-hero-tag" style="color:${p.color}">${p.hero}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-bottom">
+          <span class="product-price">${p.price}</span>
+          <button class="buy-btn" style="background:${p.color}">Buy Now</button>
+        </div>
+      </div>
     </div>
+  `).join('');
+}
 
-    <div class="item big-card">
-      <img src="https://i.pinimg.com/564x/6f/aa/23/6faa23.jpg">
-      <p>One Piece</p>
-      <a href="https://wa.me/91XXXXXXXXXX?text=I want One Piece Frame">Buy</a>
-    </div>
+function setFilter(btn, filter) {
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = filter;
+  filteredHeroes = filter === 'all' ? [...heroes] : heroes.filter(h => h.id === filter);
+  cur = 0;
+  render();
+  renderProducts(filter);
+}
 
-    <div class="item big-card">
-      <img src="https://i.pinimg.com/564x/44/aa/22/44aa22.jpg">
-      <p>Attack on Titan</p>
-      <a href="https://wa.me/91XXXXXXXXXX?text=I want AOT Frame">Buy</a>
-    </div>
+function move(dir) {
+  const total = filteredHeroes.length;
+  if (!total) return;
+  cur = ((cur + dir) % total + total) % total;
+  render();
+}
 
-  </div>
-</section>
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') move(-1);
+  if (e.key === 'ArrowRight') move(1);
+});
 
+render();
+renderProducts('all');
+</script>
 </body>
 </html>
