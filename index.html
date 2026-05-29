@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FrameForge AI</title>
+<title>Fremi — AI Frame Mockup Generator</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
@@ -40,20 +40,46 @@ header{
   background:rgba(5,5,8,0.85);backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border);
 }
-.logo{display:flex;align-items:center;gap:10px;font-size:1.1rem;font-weight:700;}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.15rem;font-weight:700;text-decoration:none;color:inherit;}
 .logo-icon{
-  width:32px;height:32px;border-radius:8px;
+  width:34px;height:34px;border-radius:9px;
   background:linear-gradient(135deg,var(--purple),var(--cyan));
-  display:grid;place-items:center;font-size:15px;
-  box-shadow:0 0 18px rgba(124,111,255,0.4);
+  display:grid;place-items:center;font-size:16px;font-style:normal;font-weight:800;
+  box-shadow:0 0 18px rgba(124,111,255,0.4);color:#fff;letter-spacing:-1px;
+  font-family:'Space Grotesk',sans-serif;
 }
-.logo span{color:var(--purple);}
+.logo-text{display:flex;align-items:baseline;gap:1px;}
+.logo-text .fr{color:var(--text);}
+.logo-text .emi{color:var(--purple);}
+.logo-tagline{font-family:'Space Mono';font-size:9px;color:var(--text3);letter-spacing:1px;margin-left:2px;display:none;}
+@media(min-width:500px){.logo-tagline{display:inline;}}
+
+.header-right{display:flex;align-items:center;gap:16px;}
 .ai-dot-wrap{display:flex;align-items:center;gap:6px;font-family:'Space Mono';font-size:10px;color:#00ff88;}
 .ai-dot{width:7px;height:7px;border-radius:50%;background:#00ff88;box-shadow:0 0 8px #00ff88;animation:blink 2s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
+.header-link{
+  font-family:'Space Mono';font-size:10px;color:var(--text3);letter-spacing:1px;
+  text-decoration:none;border:1px solid var(--border);padding:5px 12px;border-radius:5px;
+  transition:color 0.2s,border-color 0.2s;
+}
+.header-link:hover{color:var(--purple);border-color:rgba(124,111,255,0.4);}
+
+/* HERO BLURB */
+.hero{text-align:center;padding:10px 0 28px;position:relative;}
+.hero h1{font-size:clamp(22px,4vw,38px);font-weight:700;letter-spacing:-0.5px;margin-bottom:8px;}
+.hero h1 span{background:linear-gradient(90deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{font-size:13px;color:var(--text3);font-family:'Space Mono';letter-spacing:0.5px;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;
+  font-family:'Space Mono';font-size:9px;color:var(--cyan);letter-spacing:2px;
+  background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.2);
+  padding:5px 14px;border-radius:20px;
+}
+.hero-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:blink 2s infinite;}
 
 /* MAIN */
-main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:90px 2rem 4rem;}
+main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:80px 2rem 4rem;}
 
 /* STEP FLOW */
 .step{
@@ -92,9 +118,7 @@ main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:90px 2rem
 }
 
 /* THUMBNAILS ROW */
-.thumbs-row{
-  display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;
-}
+.thumbs-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
 .thumb-item{
   position:relative;width:72px;height:72px;border-radius:8px;overflow:hidden;
   border:1px solid var(--border2);flex-shrink:0;
@@ -224,6 +248,41 @@ input[type=range]::-webkit-slider-thumb{
   font-family:'Space Mono';font-size:10px;color:var(--text3);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
+
+/* FOOTER */
+footer{
+  position:relative;z-index:1;
+  text-align:center;padding:2.5rem 2rem;
+  border-top:1px solid var(--border);
+  margin-top:1rem;
+}
+.footer-logo{
+  display:inline-flex;align-items:center;gap:8px;
+  text-decoration:none;margin-bottom:10px;
+}
+.footer-logo-icon{
+  width:22px;height:22px;border-radius:6px;
+  background:linear-gradient(135deg,var(--purple),var(--cyan));
+  display:grid;place-items:center;font-size:10px;font-weight:800;
+  color:#fff;font-family:'Space Grotesk',sans-serif;
+}
+.footer-logo-text .fr{color:var(--text2);}
+.footer-logo-text .emi{color:var(--purple);}
+.footer-logo-text{font-size:13px;font-weight:700;}
+.footer-tagline{
+  font-family:'Space Mono';font-size:10px;color:var(--text3);
+  letter-spacing:1px;margin-bottom:14px;
+}
+.footer-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;}
+.footer-links a{
+  font-family:'Space Mono';font-size:10px;color:var(--text3);
+  text-decoration:none;letter-spacing:1px;transition:color 0.2s;
+}
+.footer-links a:hover{color:var(--purple);}
+.footer-copy{
+  margin-top:16px;font-family:'Space Mono';font-size:9px;
+  color:var(--text3);letter-spacing:1px;opacity:0.6;
+}
 </style>
 </head>
 <body>
@@ -231,17 +290,32 @@ input[type=range]::-webkit-slider-thumb{
 <div class="orb orb2"></div>
 
 <header>
-  <div class="logo">
-    <div class="logo-icon">⬡</div>
-    Frame<span>Forge</span>
-  </div>
-  <div class="ai-dot-wrap">
-    <div class="ai-dot"></div>
-    AI READY
+  <a class="logo" href="https://fremi.com">
+    <div class="logo-icon">fr</div>
+    <div class="logo-text">
+      <span class="fr">fr</span><span class="emi">emi</span>
+    </div>
+    <span class="logo-tagline">/ FRAME MOCKUPS</span>
+  </a>
+  <div class="header-right">
+    <a class="header-link" href="https://fremi.com">fremi.com ↗</a>
+    <div class="ai-dot-wrap">
+      <div class="ai-dot"></div>
+      AI READY
+    </div>
   </div>
 </header>
 
 <main>
+
+  <div class="hero">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      POWERED BY FREMI.COM
+    </div>
+    <h1>Turn designs into<br><span>framed wall art mockups</span></h1>
+    <p>Upload 100+ images · Pick your frame · Download HD in seconds</p>
+  </div>
 
   <!-- STEP 1: UPLOAD -->
   <div class="step" id="step1">
@@ -307,11 +381,27 @@ input[type=range]::-webkit-slider-thumb{
 
 </main>
 
+<!-- FOOTER -->
+<footer>
+  <a class="footer-logo" href="https://fremi.com">
+    <div class="footer-logo-icon">fr</div>
+    <div class="footer-logo-text"><span class="fr">fr</span><span class="emi">emi</span></div>
+  </a>
+  <p class="footer-tagline">AI-POWERED FRAME MOCKUP GENERATOR</p>
+  <div class="footer-links">
+    <a href="https://fremi.com">Home</a>
+    <a href="https://fremi.com/tools">All Tools</a>
+    <a href="https://fremi.com/pricing">Pricing</a>
+    <a href="https://fremi.com/contact">Contact</a>
+  </div>
+  <p class="footer-copy">© 2025 fremi.com · All rights reserved</p>
+</footer>
+
 <script>
 // ── STATE ──
 let files = [];
 let frameColor = '#111111';
-let frameSize = 40; // 0-100
+let frameSize = 40;
 let canvases = [];
 
 // ── FRAME COLORS ──
@@ -326,7 +416,6 @@ const COLORS = [
   {hex:'#5a1a1a', name:'Burgundy'},
 ];
 
-// Build color grid
 const cg = document.getElementById('colorGrid');
 COLORS.forEach(c => {
   const btn = document.createElement('div');
@@ -364,7 +453,6 @@ function handleFiles(flist) {
   renderThumbs();
   document.getElementById('fileCount').textContent = '✓  ' + files.length + ' files ready';
   document.getElementById('fileCount').style.display = 'block';
-  // Unlock steps
   ['step2','step3','step4'].forEach(id => {
     const el = document.getElementById(id);
     el.style.opacity = '1'; el.style.pointerEvents = 'auto';
@@ -387,7 +475,7 @@ function renderThumbs() {
   });
   if (files.length > 5) {
     const more = document.createElement('div'); more.className = 'thumb-more';
-    more.innerHTML = '<span style="font-size:18px">+</span><span>'+( files.length - 5)+'</span>';
+    more.innerHTML = '<span style="font-size:18px">+</span><span>'+(files.length - 5)+'</span>';
     row.appendChild(more);
   }
 }
@@ -405,7 +493,6 @@ function drawFrame(canvas, img) {
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
 
-  // Background = same as frame color but lighter wall
   const wallColors = {
     '#111111': '#e8e4de', '#ffffff': '#e0dbd5',
     '#8B6910': '#ece8e0', '#909090': '#e4e4e8',
@@ -422,34 +509,27 @@ function drawFrame(canvas, img) {
   const wc = wallColors[frameColor] || '#e8e4de';
   const fc = floorColors[frameColor] || '#c9b99a';
 
-  // Wall
   const flH = Math.round(H * 0.28);
   const wg = ctx.createLinearGradient(0,0,0,H-flH);
   wg.addColorStop(0, wc);
   wg.addColorStop(1, shadeColor(wc, -15));
   ctx.fillStyle = wg; ctx.fillRect(0, 0, W, H - flH);
 
-  // Floor
   const fg = ctx.createLinearGradient(0, H-flH, 0, H);
   fg.addColorStop(0, shadeColor(fc, -20));
   fg.addColorStop(1, fc);
   ctx.fillStyle = fg; ctx.fillRect(0, H - flH, W, flH);
 
-  // Floor/wall line
   ctx.fillStyle = 'rgba(0,0,0,0.1)'; ctx.fillRect(0, H-flH-1, W, 3);
 
-  // Frame dimensions
   const fW = Math.round(W * 0.68);
   const fH = Math.round(H * 0.74);
   const fX = Math.round((W - fW) / 2);
   const fY = Math.round(H * 0.025);
 
-  // Border thickness from slider (0-100 → 1% to 5% of frame width)
   const bpx = Math.round(fW * (0.008 + (frameSize / 100) * 0.055));
-  // Mat = fixed generous white border
   const mpx = Math.round(fW * 0.07);
 
-  // Shadow
   ctx.save();
   ctx.shadowColor = 'rgba(0,0,0,0.35)';
   ctx.shadowBlur = Math.round(W * 0.018);
@@ -458,34 +538,28 @@ function drawFrame(canvas, img) {
   ctx.fillStyle = frameColor; ctx.fillRect(fX, fY, fW, fH);
   ctx.restore();
 
-  // Frame border
   ctx.fillStyle = frameColor; ctx.fillRect(fX, fY, fW, fH);
 
-  // Gold sheen
   if (frameColor === '#8B6910') {
     ctx.save();
     ctx.strokeStyle = 'rgba(240,200,80,0.45)'; ctx.lineWidth = 1.5;
     ctx.strokeRect(fX+2, fY+2, fW-4, fH-4);
     ctx.restore();
   }
-  // Silver sheen
   if (frameColor === '#909090') {
     ctx.save();
     const sg = ctx.createLinearGradient(fX, fY, fX+fW, fY);
     sg.addColorStop(0,'rgba(255,255,255,0.08)'); sg.addColorStop(0.5,'rgba(255,255,255,0.25)'); sg.addColorStop(1,'rgba(255,255,255,0.08)');
     ctx.fillStyle = sg; ctx.fillRect(fX, fY, fW, fH); ctx.restore();
   }
-  // White frame inner line
   if (frameColor === '#ffffff') {
     ctx.save(); ctx.strokeStyle='rgba(0,0,0,0.12)'; ctx.lineWidth=1;
     ctx.strokeRect(fX+0.5, fY+0.5, fW-1, fH-1); ctx.restore();
   }
 
-  // White mat
   ctx.fillStyle = '#f5f5f2';
   ctx.fillRect(fX+bpx, fY+bpx, fW-bpx*2, fH-bpx*2);
 
-  // Image area
   const ix = fX+bpx+mpx, iy = fY+bpx+mpx;
   const iw = fW-bpx*2-mpx*2, ih = fH-bpx*2-mpx*2;
   ctx.fillStyle = '#fff'; ctx.fillRect(ix, iy, iw, ih);
@@ -498,7 +572,15 @@ function drawFrame(canvas, img) {
     ctx.restore();
   }
 
-  // Floor reflection
+  // fremi.com watermark — subtle bottom-right of canvas
+  ctx.save();
+  ctx.globalAlpha = 0.28;
+  ctx.font = 'bold 18px Space Grotesk, sans-serif';
+  ctx.fillStyle = '#555';
+  ctx.textAlign = 'right';
+  ctx.fillText('fremi.com', W - 20, H - 16);
+  ctx.restore();
+
   const rY = fY + fH, rH = Math.round(fH * 0.06);
   ctx.save(); ctx.globalAlpha = 0.25;
   ctx.translate(fX, rY+rH); ctx.scale(1,-1);
@@ -525,9 +607,7 @@ function hexRgb(hex) {
 // ── GENERATE ──
 async function generate() {
   if (!files.length) return;
-  // HD output: 1600x2133
   const W = 1600, H = 2134;
-  const t0 = Date.now();
   canvases = [];
 
   document.getElementById('progWrap').style.display = 'block';
@@ -545,7 +625,6 @@ async function generate() {
     const name = files[i].name.replace(/\.[^.]+$/, '');
     canvases.push({ canvas: c, name });
 
-    // Preview tile
     const wrap = document.createElement('div'); wrap.className = 'citem';
     const fc2 = document.createElement('canvas');
     const sc = 220 / W;
@@ -574,7 +653,7 @@ async function generate() {
 
 function dlOne(i) {
   const a = document.createElement('a');
-  a.download = 'mockup_' + canvases[i].name + '.jpg';
+  a.download = 'fremi_mockup_' + canvases[i].name + '.jpg';
   a.href = canvases[i].canvas.toDataURL('image/jpeg', 0.95);
   a.click();
 }
@@ -582,15 +661,15 @@ function dlOne(i) {
 async function downloadZip() {
   const btn = document.getElementById('zipBtn');
   btn.disabled = true; btn.textContent = '⏳ Building ZIP...';
-  const zip = new JSZip(), folder = zip.folder('Mockups');
+  const zip = new JSZip(), folder = zip.folder('Fremi_Mockups');
   for (let i = 0; i < canvases.length; i++) {
     const b64 = canvases[i].canvas.toDataURL('image/jpeg', 0.95).split(',')[1];
-    folder.file('mockup_' + canvases[i].name + '.jpg', b64, { base64: true });
+    folder.file('fremi_mockup_' + canvases[i].name + '.jpg', b64, { base64: true });
     await new Promise(r => setTimeout(r, 0));
   }
   const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 3 } });
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = 'Mockups_HD.zip'; a.click();
+  a.href = URL.createObjectURL(blob); a.download = 'Fremi_Mockups_HD.zip'; a.click();
   URL.revokeObjectURL(a.href);
   btn.disabled = false; btn.textContent = '↓ Download ZIP';
 }
