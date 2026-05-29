@@ -1,317 +1,822 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Best Collection for Hero</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FrameForge — Wall Art Mockup Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:#0a0a0a;color:#fff;overflow-x:hidden}
+  :root {
+    --cream: #f5f0e8;
+    --warm-white: #faf8f4;
+    --charcoal: #1c1c1a;
+    --gold: #b8924a;
+    --gold-light: #d4aa6a;
+    --muted: #7a7570;
+    --border: rgba(28,28,26,0.12);
+    --shadow: 0 2px 20px rgba(28,28,26,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    min-height: 100vh;
+  }
 
-/* HEADER */
-.wrap{max-width:980px;margin:0 auto;padding:50px 16px 70px}
-.eyebrow{text-align:center;font-size:11px;letter-spacing:0.16em;color:#888;text-transform:uppercase;margin-bottom:12px}
-.main-title{text-align:center;font-size:clamp(30px,6vw,58px);font-weight:900;line-height:1.05;margin-bottom:14px;background:linear-gradient(135deg,#fff 30%,#aaa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.subtitle{text-align:center;font-size:15px;color:#666;line-height:1.7;margin-bottom:40px}
+  /* ── HEADER ── */
+  header {
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 0 3rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-icon {
+    width: 28px; height: 28px;
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .header-tag {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
 
-/* PILLS */
-.filters{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:44px}
-.pill{border:1.5px solid #333;border-radius:999px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;background:transparent;color:#aaa;transition:all .2s}
-.pill.active,.pill:hover{background:#fff;color:#000;border-color:#fff}
-.view-more-btn{border:1.5px solid #555;border-radius:999px;padding:8px 20px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#aaa;white-space:nowrap;transition:all .2s}
-.view-more-btn:hover{border-color:#fff;color:#fff}
+  /* ── HERO ── */
+  .hero {
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 4rem 3rem 3rem;
+    text-align: center;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero p {
+    font-size: 1rem;
+    color: rgba(245,240,232,0.65);
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 1.5rem;
+    margin-top: 1rem;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--gold-light);
+  }
+  .hero-stat .lbl { font-size: 11px; letter-spacing: 2px; color: rgba(245,240,232,0.5); text-transform: uppercase; margin-top: 2px; }
 
-/* CAROUSEL */
-.carousel-wrap{overflow:hidden;padding:24px 0 32px}
-.track{display:flex;gap:18px;align-items:center;justify-content:center}
-.card{flex-shrink:0;border-radius:22px;overflow:hidden;position:relative;cursor:pointer;transition:all .45s cubic-bezier(.4,0,.2,1)}
-.card.center{width:clamp(210px,36vw,300px);height:clamp(270px,44vw,390px);z-index:2;transform:scale(1.1);box-shadow:0 24px 70px rgba(0,0,0,0.7)}
-.card.side{width:clamp(140px,24vw,200px);height:clamp(190px,32vw,290px);z-index:1;opacity:0.65}
-.card.far{width:clamp(90px,16vw,145px);height:clamp(130px,22vw,210px);z-index:0;opacity:0.35}
-.card img{width:100%;height:100%;object-fit:cover;display:block}
-.card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 55%,transparent 100%)}
-.hero-badge{position:absolute;top:12px;left:12px;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
-.hero-label{position:absolute;bottom:14px;left:14px;right:14px}
-.hero-name{font-size:18px;font-weight:800;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.5)}
-.hero-tagline{font-size:11px;color:rgba(255,255,255,0.65);margin-top:3px}
-.card.side .hero-label,.card.far .hero-label,.card.side .hero-badge,.card.far .hero-badge{display:none}
+  /* ── MAIN LAYOUT ── */
+  .main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem; }
+  .layout { display: grid; grid-template-columns: 340px 1fr; gap: 2rem; align-items: start; }
 
-/* NAV */
-.nav-row{display:flex;justify-content:center;gap:14px;margin-top:8px}
-.nav-btn{width:42px;height:42px;border-radius:50%;border:1.5px solid #333;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;transition:all .2s}
-.nav-btn:hover{border-color:#fff;background:#fff;color:#000}
-.nav-btn svg{width:16px;height:16px}
+  /* ── PANEL ── */
+  .panel {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .panel-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel-header .step {
+    width: 22px; height: 22px;
+    background: var(--charcoal);
+    color: var(--cream);
+    font-size: 11px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .panel-header h3 { font-size: 13px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
+  .panel-body { padding: 1.25rem; }
 
-/* DIVIDER */
-.divider{border:none;border-top:1px solid #1e1e1e;margin:64px 0 48px}
+  /* ── UPLOAD ZONE ── */
+  .upload-zone {
+    border: 1.5px dashed rgba(28,28,26,0.2);
+    border-radius: 2px;
+    padding: 2rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--cream);
+    position: relative;
+  }
+  .upload-zone:hover, .upload-zone.dragover { border-color: var(--gold); background: rgba(184,146,74,0.05); }
+  .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .upload-icon { font-size: 2.5rem; margin-bottom: 0.75rem; opacity: 0.4; }
+  .upload-zone h4 { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .upload-zone p { font-size: 12px; color: var(--muted); }
+  .file-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--charcoal); color: var(--cream);
+    font-size: 11px; padding: 4px 10px; border-radius: 20px;
+    margin-top: 10px;
+  }
+  .file-list-mini {
+    margin-top: 10px; max-height: 100px; overflow-y: auto;
+    border: 1px solid var(--border); border-radius: 2px;
+    background: var(--cream);
+  }
+  .file-list-mini .fi {
+    padding: 4px 10px; font-size: 11px; color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .file-list-mini .fi:last-child { border-bottom: none; }
 
-/* BEST SELLING */
-.section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
-.section-title{font-size:clamp(22px,4vw,36px);font-weight:800}
-.section-sub{font-size:13px;color:#666;margin-top:5px}
-.see-all{font-size:13px;font-weight:600;color:#aaa;cursor:pointer;border:1.5px solid #333;border-radius:999px;padding:7px 18px;background:transparent;transition:all .2s}
-.see-all:hover{color:#fff;border-color:#fff}
+  /* ── SETTINGS ── */
+  .setting-group { margin-bottom: 1.25rem; }
+  .setting-group:last-child { margin-bottom: 0; }
+  .setting-label {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px; display: block;
+  }
+  .chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip {
+    border: 1px solid var(--border);
+    background: var(--cream);
+    color: var(--charcoal);
+    font-size: 11px; font-family: 'DM Sans', sans-serif;
+    padding: 4px 12px; border-radius: 20px;
+    cursor: pointer; transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .chip:hover { border-color: var(--charcoal); }
+  .chip.active { background: var(--charcoal); color: var(--cream); border-color: var(--charcoal); }
+  .chip.gold-active.active { background: var(--gold); border-color: var(--gold); }
 
-.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px}
-.product-card{background:#111;border:1px solid #1e1e1e;border-radius:18px;overflow:hidden;transition:all .3s;cursor:pointer}
-.product-card:hover{transform:translateY(-7px);border-color:#333;box-shadow:0 20px 50px rgba(0,0,0,0.5)}
-.product-img-wrap{position:relative;overflow:hidden}
-.product-img{width:100%;height:200px;object-fit:cover;display:block;transition:transform .4s}
-.product-card:hover .product-img{transform:scale(1.05)}
-.product-hero-strip{position:absolute;top:0;left:0;right:0;height:3px}
-.product-info{padding:16px}
-.product-hero-tag{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px}
-.product-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.4}
-.product-bottom{display:flex;align-items:center;justify-content:space-between}
-.product-price{font-size:16px;font-weight:800;color:#fff}
-.buy-btn{border:none;border-radius:999px;padding:7px 15px;font-size:12px;font-weight:700;cursor:pointer;color:#000;transition:all .2s}
-.buy-btn:hover{opacity:0.85;transform:scale(1.04)}
+  .color-swatches { display: flex; gap: 6px; flex-wrap: wrap; }
+  .swatch {
+    width: 26px; height: 26px; border-radius: 50%;
+    cursor: pointer; border: 2px solid transparent;
+    transition: all 0.15s;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+  }
+  .swatch:hover { transform: scale(1.1); }
+  .swatch.active { border-color: var(--charcoal); outline: 2px solid var(--charcoal); outline-offset: 2px; }
 
-@media(max-width:600px){
-  .card.far{display:none}
-  .card.side{width:clamp(120px,30vw,170px);height:clamp(160px,38vw,230px)}
-  .card.center{width:clamp(185px,50vw,240px);height:clamp(240px,62vw,320px)}
-  .product-grid{grid-template-columns:repeat(2,1fr);gap:12px}
-  .product-img{height:150px}
-  .section-header{flex-direction:column;align-items:flex-start}
-}
+  .slider-row { display: flex; align-items: center; gap: 10px; }
+  input[type=range] {
+    flex: 1; height: 3px; appearance: none;
+    background: rgba(28,28,26,0.15); border-radius: 2px; outline: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    appearance: none; width: 14px; height: 14px;
+    background: var(--charcoal); border-radius: 50%; cursor: pointer;
+  }
+  .slider-val { font-size: 12px; color: var(--muted); min-width: 30px; text-align: right; }
+
+  .divider { height: 1px; background: var(--border); margin: 1.25rem 0; }
+
+  /* ── BUTTONS ── */
+  .btn-generate {
+    width: 100%;
+    background: var(--charcoal);
+    color: var(--cream);
+    border: none; border-radius: 2px;
+    padding: 13px 20px;
+    font-size: 13px; font-family: 'DM Sans', sans-serif;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-generate:hover { background: #333; }
+  .btn-generate:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-download {
+    width: 100%;
+    background: var(--gold);
+    color: #fff;
+    border: none; border-radius: 2px;
+    padding: 13px 20px;
+    font-size: 13px; font-family: 'DM Sans', sans-serif;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-top: 10px;
+  }
+  .btn-download:hover { background: var(--gold-light); }
+  .btn-download:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ── PROGRESS ── */
+  .progress-wrap { margin-top: 1rem; display: none; }
+  .progress-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.3s; }
+  .progress-text { font-size: 12px; color: var(--muted); margin-top: 6px; text-align: center; }
+
+  /* ── OUTPUT GRID ── */
+  .output-panel { min-height: 400px; }
+  .output-empty {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    height: 400px; text-align: center;
+    background: var(--warm-white); border: 1px solid var(--border); border-radius: 2px;
+  }
+  .output-empty .big-icon { font-size: 4rem; opacity: 0.15; margin-bottom: 1rem; }
+  .output-empty h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; color: var(--muted); }
+  .output-empty p { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+  .output-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .output-header h3 { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+  .output-header .count { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--charcoal); }
+
+  .mockup-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .mockup-item {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .mockup-item:hover { border-color: var(--charcoal); box-shadow: var(--shadow); transform: translateY(-2px); }
+  .mockup-canvas { width: 100%; display: block; }
+  .mockup-footer {
+    padding: 8px 10px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .mockup-name { font-size: 10px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+  .dl-single {
+    font-size: 10px; color: var(--charcoal);
+    background: none; border: 1px solid var(--border);
+    padding: 2px 8px; border-radius: 10px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    flex-shrink: 0; margin-left: 6px;
+    transition: all 0.15s;
+  }
+  .dl-single:hover { background: var(--charcoal); color: var(--cream); border-color: var(--charcoal); }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px; margin-bottom: 1rem; display: none;
+  }
+  .stat-card {
+    background: var(--warm-white); border: 1px solid var(--border);
+    border-radius: 2px; padding: 12px 16px;
+  }
+  .stat-card .sv { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 600; }
+  .stat-card .sl { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+
+  /* ── WATERMARK NOTE ── */
+  .watermark-note {
+    text-align: center; font-size: 11px; color: var(--muted);
+    padding: 0.5rem; margin-top: 0.5rem;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    header { padding: 0 1.5rem; }
+    .hero { padding: 2.5rem 1.5rem 2rem; }
+    .main { padding: 1.5rem 1rem; }
+    .hero-stats { gap: 1.5rem; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <p class="eyebrow">Gallery</p>
-  <h1 class="main-title">Best Collection for Hero</h1>
-  <p class="subtitle">Explore the mightiest heroes of the Marvel universe —<br>legends captured through every frame.</p>
-
-  <div class="filters">
-    <button class="pill active" onclick="setFilter(this,'all')">All Heroes</button>
-    <button class="pill" onclick="setFilter(this,'iron-man')">Iron Man</button>
-    <button class="pill" onclick="setFilter(this,'spider-man')">Spider-Man</button>
-    <button class="pill" onclick="setFilter(this,'thor')">Thor</button>
-    <button class="pill" onclick="setFilter(this,'captain-america')">Captain America</button>
-    <button class="pill" onclick="setFilter(this,'doctor-strange')">Doctor Strange</button>
-    <button class="pill" onclick="setFilter(this,'hulk')">Hulk</button>
-    <button class="view-more-btn">View More →</button>
+<header>
+  <div class="logo">
+    <div class="logo-icon">◻</div>
+    FrameForge
   </div>
+  <div class="header-tag">Wall Art Mockup Studio</div>
+</header>
 
-  <div class="carousel-wrap">
-    <div class="track" id="track"></div>
+<div class="hero">
+  <h1>Turn Designs into<br><em>Stunning Wall Art</em> Mockups</h1>
+  <p>Upload 100+ designs at once. Every file becomes a professional framed mockup — ready to sell in seconds.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">100+</div><div class="lbl">Files at once</div></div>
+    <div class="hero-stat"><div class="num">6</div><div class="lbl">Frame styles</div></div>
+    <div class="hero-stat"><div class="num">1-Click</div><div class="lbl">ZIP download</div></div>
   </div>
-  <div class="nav-row">
-    <button class="nav-btn" onclick="move(-1)" aria-label="Previous">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <button class="nav-btn" onclick="move(1)" aria-label="Next">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg>
-    </button>
-  </div>
-
-  <hr class="divider" />
-
-  <div class="section-header">
-    <div>
-      <h2 class="section-title">Best Selling Products</h2>
-      <p class="section-sub">Top picks from our Marvel hero merchandise</p>
-    </div>
-    <button class="see-all">See All →</button>
-  </div>
-  <div class="product-grid" id="product-grid"></div>
-
 </div>
-<script>
-const heroes = [
-  {
-    id:'iron-man',
-    name:'Iron Man',
-    tagline:'Genius. Billionaire. Avenger.',
-    color:'#e53935',
-    badge:'#b71c1c',
-    // Red/gold tech themed image
-    img:'https://images.unsplash.com/photo-1518770660439-4636190af475?w=700&auto=format&fit=crop',
-  },
-  {
-    id:'spider-man',
-    name:'Spider-Man',
-    tagline:'Your Friendly Neighbourhood Hero.',
-    color:'#e53935',
-    badge:'#b71c1c',
-    // Red/blue city night image
-    img:'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=700&auto=format&fit=crop',
-  },
-  {
-    id:'thor',
-    name:'Thor',
-    tagline:'God of Thunder. Son of Odin.',
-    color:'#1565c0',
-    badge:'#0d47a1',
-    // Lightning / dramatic sky
-    img:'https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=700&auto=format&fit=crop',
-  },
-  {
-    id:'captain-america',
-    name:'Captain America',
-    tagline:'I can do this all day.',
-    color:'#1565c0',
-    badge:'#0d47a1',
-    // Blue patriotic / shield-like
-    img:'https://images.unsplash.com/photo-1569701813229-33284b643e3c?w=700&auto=format&fit=crop',
-  },
-  {
-    id:'doctor-strange',
-    name:'Doctor Strange',
-    tagline:'Master of the Mystic Arts.',
-    color:'#6a1b9a',
-    badge:'#4a148c',
-    // Purple mystic / cosmic
-    img:'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=700&auto=format&fit=crop',
-  },
-  {
-    id:'hulk',
-    name:'Hulk',
-    tagline:'Hulk Smash!',
-    color:'#2e7d32',
-    badge:'#1b5e20',
-    // Green forest / powerful nature
-    img:'https://images.unsplash.com/photo-1511497584788-876760111969?w=700&auto=format&fit=crop',
-  },
-];
 
-const products = [
-  {
-    hero:'Iron Man', tag:'iron-man', color:'#e53935',
-    name:'Arc Reactor Glow Tee', price:'₹999',
-    img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&auto=format&fit=crop'
-  },
-  {
-    hero:'Spider-Man', tag:'spider-man', color:'#e53935',
-    name:'Web Slinger Hoodie', price:'₹1,499',
-    img:'https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=500&auto=format&fit=crop'
-  },
-  {
-    hero:'Thor', tag:'thor', color:'#1565c0',
-    name:'Thunder God Cap', price:'₹599',
-    img:'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=500&auto=format&fit=crop'
-  },
-  {
-    hero:'Captain America', tag:'captain-america', color:'#1565c0',
-    name:'Shield Warrior Backpack', price:'₹1,299',
-    img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop'
-  },
-  {
-    hero:'Doctor Strange', tag:'doctor-strange', color:'#6a1b9a',
-    name:'Mystic Sling Ring Necklace', price:'₹449',
-    img:'https://images.unsplash.com/photo-1611085583191-a3b181a88552?w=500&auto=format&fit=crop'
-  },
-  {
-    hero:'Hulk', tag:'hulk', color:'#2e7d32',
-    name:'Smash Strength Gym Bag', price:'₹899',
-    img:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop'
-  },
-];
+<div class="main">
+  <div class="layout">
 
-let cur = 0;
-let activeFilter = 'all';
-let filteredHeroes = [...heroes];
+    <!-- LEFT PANEL -->
+    <div style="display:flex;flex-direction:column;gap:1rem;">
 
-function render() {
-  const track = document.getElementById('track');
-  track.innerHTML = '';
-  if (!filteredHeroes.length) {
-    track.innerHTML = '<p style="color:#555;text-align:center;padding:40px">No heroes found.</p>';
-    return;
-  }
-  const positions = ['far','side','center','side','far'];
-  const total = filteredHeroes.length;
-  for (let i = 0; i < 5; i++) {
-    let idx = ((cur - 2 + i) % total + total) % total;
-    let hero = filteredHeroes[idx];
-    let card = document.createElement('div');
-    card.className = 'card ' + positions[i];
-
-    let img = document.createElement('img');
-    img.src = hero.img;
-    img.alt = hero.name;
-    card.appendChild(img);
-
-    let overlay = document.createElement('div');
-    overlay.className = 'card-overlay';
-    card.appendChild(overlay);
-
-    if (positions[i] === 'center') {
-      let badge = document.createElement('div');
-      badge.className = 'hero-badge';
-      badge.style.background = hero.badge;
-      badge.style.color = '#fff';
-      badge.textContent = hero.id.replace('-',' ').toUpperCase();
-      card.appendChild(badge);
-
-      let label = document.createElement('div');
-      label.className = 'hero-label';
-      label.innerHTML = `<div class="hero-name">${hero.name}</div><div class="hero-tagline">${hero.tagline}</div>`;
-      card.appendChild(label);
-
-      // Colored border glow
-      card.style.boxShadow = `0 24px 70px rgba(0,0,0,0.7), 0 0 0 2px ${hero.color}55`;
-    }
-
-    const clickIdx = idx;
-    card.addEventListener('click', () => { cur = clickIdx; render(); });
-    track.appendChild(card);
-  }
-}
-
-function renderProducts(filter) {
-  const grid = document.getElementById('product-grid');
-  const list = filter === 'all' ? products : products.filter(p => p.tag === filter);
-  if (!list.length) {
-    grid.innerHTML = '<p style="color:#555;grid-column:1/-1;text-align:center;padding:30px">No products yet.</p>';
-    return;
-  }
-  grid.innerHTML = list.map(p => `
-    <div class="product-card">
-      <div class="product-img-wrap">
-        <img class="product-img" src="${p.img}" alt="${p.name}" />
-        <div class="product-hero-strip" style="background:${p.color}"></div>
-      </div>
-      <div class="product-info">
-        <div class="product-hero-tag" style="color:${p.color}">${p.hero}</div>
-        <div class="product-name">${p.name}</div>
-        <div class="product-bottom">
-          <span class="product-price">${p.price}</span>
-          <button class="buy-btn" style="background:${p.color}">Buy Now</button>
+      <!-- Upload -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="step">1</div>
+          <h3>Upload Designs</h3>
+        </div>
+        <div class="panel-body">
+          <div class="upload-zone" id="uploadZone">
+            <input type="file" id="fileInput" accept="image/*" multiple>
+            <div class="upload-icon">🖼️</div>
+            <h4>Drop images here</h4>
+            <p>PNG, JPG — select 100+ at once</p>
+          </div>
+          <div id="fileInfo" style="display:none;">
+            <div class="file-badge" id="fileBadge">✓ 0 files ready</div>
+            <div class="file-list-mini" id="fileListMini"></div>
+          </div>
         </div>
       </div>
+
+      <!-- Settings -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="step">2</div>
+          <h3>Frame Settings</h3>
+        </div>
+        <div class="panel-body">
+
+          <div class="setting-group">
+            <span class="setting-label">Frame Style</span>
+            <div class="chip-row">
+              <button class="chip active" onclick="set('frame','thin_black',this)">Thin Black</button>
+              <button class="chip" onclick="set('frame','thick_black',this)">Thick Black</button>
+              <button class="chip gold-active" onclick="set('frame','gold',this)">Gold</button>
+              <button class="chip" onclick="set('frame','white',this)">White</button>
+              <button class="chip" onclick="set('frame','natural',this)">Natural Wood</button>
+              <button class="chip" onclick="set('frame','none',this)">No Frame</button>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <span class="setting-label">White Mat Border</span>
+            <div class="chip-row">
+              <button class="chip active" onclick="set('mat','wide',this)">Wide</button>
+              <button class="chip" onclick="set('mat','medium',this)">Medium</button>
+              <button class="chip" onclick="set('mat','thin',this)">Thin</button>
+              <button class="chip" onclick="set('mat','none',this)">None</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="setting-group">
+            <span class="setting-label">Room Style</span>
+            <div class="chip-row">
+              <button class="chip active" onclick="set('room','floor',this)">Floor Lean</button>
+              <button class="chip" onclick="set('room','wall',this)">Wall Hang</button>
+              <button class="chip" onclick="set('room','plain',this)">Plain BG</button>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <span class="setting-label">Wall Color</span>
+            <div class="color-swatches" id="wallSwatches"></div>
+          </div>
+
+          <div class="setting-group">
+            <span class="setting-label">Floor Color</span>
+            <div class="color-swatches" id="floorSwatches"></div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="setting-group">
+            <span class="setting-label">Output Size</span>
+            <div class="chip-row">
+              <button class="chip" onclick="set('size','small',this)">Small (800px)</button>
+              <button class="chip active" onclick="set('size','medium',this)">Medium (1200px)</button>
+              <button class="chip" onclick="set('size','large',this)">Large (2000px)</button>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <span class="setting-label">Shadow</span>
+            <div class="chip-row">
+              <button class="chip active" onclick="set('shadow','soft',this)">Soft</button>
+              <button class="chip" onclick="set('shadow','strong',this)">Strong</button>
+              <button class="chip" onclick="set('shadow','none',this)">None</button>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <span class="setting-label">Design Fit</span>
+            <div class="chip-row">
+              <button class="chip active" onclick="set('fit','contain',this)">Fit (show all)</button>
+              <button class="chip" onclick="set('fit','fill',this)">Fill frame</button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Watermark toggle -->
+          <div class="setting-group">
+            <span class="setting-label">Branding</span>
+            <div class="chip-row">
+              <button class="chip active" onclick="set('watermark','none',this)">No watermark</button>
+              <button class="chip" onclick="set('watermark','show',this)">Add watermark</button>
+            </div>
+          </div>
+          <div id="wmInputWrap" style="display:none;margin-top:8px;">
+            <input type="text" id="wmText" placeholder="Your brand name / website"
+              style="width:100%;padding:7px 10px;font-size:12px;border:1px solid var(--border);border-radius:2px;font-family:'DM Sans',sans-serif;background:var(--cream);">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Generate button -->
+      <div class="panel">
+        <div class="panel-body">
+          <button class="btn-generate" id="genBtn" onclick="generate()" disabled>
+            ◻ Generate All Mockups
+          </button>
+          <button class="btn-download" id="dlBtn" onclick="downloadZip()" style="display:none;">
+            ↓ Download All as ZIP
+          </button>
+          <div class="watermark-note">FrameForge — Professional Mockup Generator</div>
+          <div class="progress-wrap" id="progWrap">
+            <div class="progress-track"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+            <p class="progress-text" id="progText">Preparing...</p>
+          </div>
+        </div>
+      </div>
+
     </div>
-  `).join('');
+
+    <!-- RIGHT OUTPUT -->
+    <div>
+      <div class="stats-bar" id="statsBar">
+        <div class="stat-card"><div class="sv" id="sv1">0</div><div class="sl">Mockups Generated</div></div>
+        <div class="stat-card"><div class="sv" id="sv2">—</div><div class="sl">Output Resolution</div></div>
+        <div class="stat-card"><div class="sv" id="sv3">—</div><div class="sl">Time Taken</div></div>
+      </div>
+      <div class="output-empty" id="emptyState">
+        <div class="big-icon">◻</div>
+        <h3>Your mockups will appear here</h3>
+        <p>Upload designs and hit Generate</p>
+      </div>
+      <div id="outputArea" style="display:none;">
+        <div class="output-header">
+          <h3>Generated Mockups</h3>
+          <span class="count" id="outputCount">0 files</span>
+        </div>
+        <div class="mockup-grid" id="mockupGrid"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const S = {
+  frame: 'thin_black', mat: 'wide', room: 'floor',
+  size: 'medium', shadow: 'soft', fit: 'contain',
+  watermark: 'none', wallColor: '#e8e4de', floorColor: '#c9b99a'
+};
+let loadedFiles = [], genCanvases = [];
+
+// Color swatches
+const wallCols  = ['#e8e4de','#f0ede8','#dde0e4','#f5f5f2','#2a2a28','#e4ddd4','#d8e4dc','#f0e8e0'];
+const floorCols = ['#c9b99a','#b8a882','#d4c4a0','#a89070','#3c3028','#c8bfb0','#e2d4b8','#8b7355'];
+const wallNames  = ['Warm Beige','Off White','Slate','Pure White','Charcoal','Sand','Sage','Ivory'];
+const floorNames = ['Oak','Walnut','Maple','Mahogany','Ebony','Ash','Birch','Teak'];
+
+function buildSwatches(containerId, colors, names, setting, setter) {
+  const wrap = document.getElementById(containerId);
+  colors.forEach((c, i) => {
+    const d = document.createElement('div');
+    d.className = 'swatch' + (c === S[setting] ? ' active' : '');
+    d.style.background = c;
+    d.title = names[i];
+    d.onclick = () => {
+      setter(c);
+      wrap.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+      d.classList.add('active');
+    };
+    wrap.appendChild(d);
+  });
+}
+buildSwatches('wallSwatches',  wallCols,  wallNames,  'wallColor',  v => S.wallColor  = v);
+buildSwatches('floorSwatches', floorCols, floorNames, 'floorColor', v => S.floorColor = v);
+
+function set(key, val, btn) {
+  S[key] = val;
+  if (btn) {
+    btn.closest('.chip-row').querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  if (key === 'watermark') document.getElementById('wmInputWrap').style.display = val === 'show' ? 'block' : 'none';
 }
 
-function setFilter(btn, filter) {
-  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  activeFilter = filter;
-  filteredHeroes = filter === 'all' ? [...heroes] : heroes.filter(h => h.id === filter);
-  cur = 0;
-  render();
-  renderProducts(filter);
+// File input
+document.getElementById('fileInput').addEventListener('change', handleFiles);
+const uz = document.getElementById('uploadZone');
+uz.addEventListener('dragover', e => { e.preventDefault(); uz.classList.add('dragover'); });
+uz.addEventListener('dragleave', () => uz.classList.remove('dragover'));
+uz.addEventListener('drop', e => { e.preventDefault(); uz.classList.remove('dragover'); handleFileDrop(e.dataTransfer.files); });
+
+function handleFiles(e) { handleFileDrop(e.target.files); }
+function handleFileDrop(flist) {
+  loadedFiles = Array.from(flist).filter(f => f.type.startsWith('image/'));
+  if (!loadedFiles.length) return;
+  document.getElementById('fileBadge').textContent = '✓ ' + loadedFiles.length + ' files ready';
+  document.getElementById('fileInfo').style.display = 'block';
+  const mini = document.getElementById('fileListMini');
+  mini.innerHTML = '';
+  loadedFiles.slice(0, 10).forEach(f => {
+    const d = document.createElement('div'); d.className = 'fi'; d.textContent = f.name;
+    mini.appendChild(d);
+  });
+  if (loadedFiles.length > 10) {
+    const d = document.createElement('div'); d.className = 'fi';
+    d.style.color = 'var(--gold)';
+    d.textContent = '+ ' + (loadedFiles.length - 10) + ' more files';
+    mini.appendChild(d);
+  }
+  document.getElementById('genBtn').disabled = false;
 }
 
-function move(dir) {
-  const total = filteredHeroes.length;
-  if (!total) return;
-  cur = ((cur + dir) % total + total) % total;
-  render();
+const outSizes = { small: 800, medium: 1200, large: 2000 };
+
+function loadImg(file) {
+  return new Promise(res => {
+    const r = new FileReader();
+    r.onload = ev => { const i = new Image(); i.onload = () => res(i); i.src = ev.target.result; };
+    r.readAsDataURL(file);
+  });
 }
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowLeft') move(-1);
-  if (e.key === 'ArrowRight') move(1);
-});
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return r+','+g+','+b;
+}
 
-render();
-renderProducts('all');
+function drawMockup(canvas, img) {
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  // Background
+  if (S.room === 'plain') {
+    ctx.fillStyle = S.wallColor;
+    ctx.fillRect(0, 0, W, H);
+  } else if (S.room === 'floor') {
+    const flH = Math.round(H * 0.30);
+    ctx.fillStyle = S.wallColor;
+    ctx.fillRect(0, 0, W, H - flH);
+    ctx.fillStyle = S.floorColor;
+    ctx.fillRect(0, H - flH, W, flH);
+    // subtle baseboard line
+    ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, H-flH); ctx.lineTo(W, H-flH); ctx.stroke();
+  } else {
+    ctx.fillStyle = S.wallColor;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  // Frame dimensions
+  const isFloor = S.room === 'floor';
+  const fW = Math.round(W * 0.70);
+  const fH = isFloor ? Math.round(H * 0.74) : Math.round(H * 0.78);
+  const fX = Math.round((W - fW) / 2);
+  const fY = isFloor ? Math.round(H * 0.03) : Math.round((H - fH) / 2);
+
+  const bpx = S.frame === 'thick_black' ? Math.round(fW*0.030)
+             : S.frame === 'none'        ? 0
+             : Math.round(fW*0.014);
+  const mpx = S.mat === 'wide'   ? Math.round(fW*0.075)
+             : S.mat === 'medium' ? Math.round(fW*0.045)
+             : S.mat === 'thin'   ? Math.round(fW*0.020)
+             : 0;
+  const bCol = S.frame === 'gold'    ? '#8B6914'
+             : S.frame === 'white'   ? '#f0f0ee'
+             : S.frame === 'natural' ? '#9B7B4E'
+             : '#111111';
+  const matCol = '#f5f5f2';
+
+  // Shadow
+  if (S.shadow !== 'none') {
+    const blur = S.shadow === 'strong' ? Math.round(W*0.025) : Math.round(W*0.012);
+    const ox   = S.shadow === 'strong' ? Math.round(W*0.006) : Math.round(W*0.003);
+    const oy   = S.shadow === 'strong' ? Math.round(W*0.012) : Math.round(W*0.006);
+    const alpha= S.shadow === 'strong' ? 0.45 : 0.25;
+    ctx.save();
+    ctx.shadowColor   = `rgba(0,0,0,${alpha})`;
+    ctx.shadowBlur    = blur;
+    ctx.shadowOffsetX = ox;
+    ctx.shadowOffsetY = oy;
+    ctx.fillStyle = bCol;
+    ctx.fillRect(fX, fY, fW, fH);
+    ctx.restore();
+  }
+
+  // Frame border
+  if (S.frame !== 'none') {
+    ctx.fillStyle = bCol;
+    ctx.fillRect(fX, fY, fW, fH);
+
+    // Gold frame: add inner highlight line
+    if (S.frame === 'gold') {
+      ctx.strokeStyle = 'rgba(255,220,120,0.4)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(fX+2, fY+2, fW-4, fH-4);
+    }
+    // Natural wood grain lines
+    if (S.frame === 'natural') {
+      ctx.save();
+      ctx.globalAlpha = 0.12;
+      ctx.strokeStyle = '#5a3c1a';
+      ctx.lineWidth = 1;
+      for (let k=4; k<bpx; k+=4) {
+        ctx.beginPath();
+        ctx.moveTo(fX+k, fY+k); ctx.lineTo(fX+fW-k, fY+k);
+        ctx.moveTo(fX+k, fY+fH-k); ctx.lineTo(fX+fW-k, fY+fH-k);
+        ctx.moveTo(fX+k, fY+k); ctx.lineTo(fX+k, fY+fH-k);
+        ctx.moveTo(fX+fW-k, fY+k); ctx.lineTo(fX+fW-k, fY+fH-k);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+  }
+
+  // Mat
+  if (mpx > 0) {
+    ctx.fillStyle = matCol;
+    ctx.fillRect(fX+bpx, fY+bpx, fW-bpx*2, fH-bpx*2);
+  }
+
+  // Image area fill
+  const ix = fX+bpx+mpx, iy = fY+bpx+mpx;
+  const iw = fW-bpx*2-mpx*2, ih = fH-bpx*2-mpx*2;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(ix, iy, iw, ih);
+
+  // Draw image
+  if (img) {
+    ctx.save();
+    ctx.rect(ix, iy, iw, ih);
+    ctx.clip();
+    if (S.fit === 'fill') {
+      const sc = Math.max(iw/img.width, ih/img.height);
+      const dw = img.width*sc, dh = img.height*sc;
+      ctx.drawImage(img, ix+(iw-dw)/2, iy+(ih-dh)/2, dw, dh);
+    } else {
+      const sc = Math.min(iw/img.width, ih/img.height);
+      const dw = img.width*sc, dh = img.height*sc;
+      ctx.drawImage(img, ix+(iw-dw)/2, iy+(ih-dh)/2, dw, dh);
+    }
+    ctx.restore();
+  }
+
+  // Floor reflection
+  if (isFloor && S.frame !== 'none') {
+    const refY  = fY + fH;
+    const refH  = Math.round(fH * 0.10);
+    ctx.save();
+    ctx.translate(fX, refY*2);
+    ctx.scale(1, -1);
+    ctx.drawImage(canvas, fX, fY, fW, refH, fX, fY, fW, refH);
+    ctx.restore();
+    const grad = ctx.createLinearGradient(0, refY, 0, refY+refH);
+    const rgb  = hexToRgb(S.floorColor);
+    grad.addColorStop(0, `rgba(${rgb},0.65)`);
+    grad.addColorStop(1, `rgba(${rgb},1)`);
+    ctx.fillStyle = grad;
+    ctx.fillRect(fX, refY, fW, refH+4);
+  }
+
+  // Watermark
+  if (S.watermark === 'show') {
+    const wm = document.getElementById('wmText').value.trim() || 'Your Brand';
+    const sz = Math.round(W * 0.016);
+    ctx.font = `300 ${sz}px 'DM Sans', sans-serif`;
+    ctx.fillStyle = 'rgba(100,95,90,0.5)';
+    ctx.textAlign = 'center';
+    ctx.fillText(wm, W/2, H - Math.round(H*0.025));
+  }
+}
+
+async function generate() {
+  if (!loadedFiles.length) return;
+  const dim = outSizes[S.size];
+  const ratio = 4/3;
+  const W = dim, H = Math.round(dim * ratio);
+  const t0 = Date.now();
+  genCanvases = [];
+
+  document.getElementById('progWrap').style.display = 'block';
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('outputArea').style.display = 'block';
+  document.getElementById('mockupGrid').innerHTML = '';
+  document.getElementById('dlBtn').style.display = 'none';
+  document.getElementById('statsBar').style.display = 'none';
+  document.getElementById('genBtn').disabled = true;
+
+  for (let i = 0; i < loadedFiles.length; i++) {
+    await new Promise(r => setTimeout(r, 0));
+    const img = await loadImg(loadedFiles[i]);
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    drawMockup(c, img);
+    const name = loadedFiles[i].name.replace(/\.[^.]+$/, '');
+    genCanvases.push({ canvas: c, name });
+
+    // Preview
+    const wrap = document.createElement('div'); wrap.className = 'mockup-item';
+    const fc = document.createElement('canvas');
+    const sc = 200 / W;
+    fc.width = Math.round(W*sc); fc.height = Math.round(H*sc);
+    fc.className = 'mockup-canvas';
+    fc.getContext('2d').drawImage(c, 0, 0, fc.width, fc.height);
+    const foot = document.createElement('div'); foot.className = 'mockup-footer';
+    const nm = document.createElement('div'); nm.className = 'mockup-name'; nm.textContent = name;
+    const dlb = document.createElement('button'); dlb.className = 'dl-single'; dlb.textContent = '↓';
+    const ci = i;
+    dlb.onclick = (e) => {
+      e.stopPropagation();
+      const a = document.createElement('a');
+      a.download = 'mockup_' + genCanvases[ci].name + '.jpg';
+      a.href = genCanvases[ci].canvas.toDataURL('image/jpeg', 0.92);
+      a.click();
+    };
+    wrap.onclick = () => dlb.click();
+    foot.appendChild(nm); foot.appendChild(dlb);
+    wrap.appendChild(fc); wrap.appendChild(foot);
+    document.getElementById('mockupGrid').appendChild(wrap);
+
+    const pct = Math.round(((i+1)/loadedFiles.length)*100);
+    document.getElementById('progFill').style.width = pct + '%';
+    document.getElementById('progText').textContent = (i+1) + ' / ' + loadedFiles.length + ' done...';
+    document.getElementById('outputCount').textContent = (i+1) + ' files';
+  }
+
+  const elapsed = ((Date.now()-t0)/1000).toFixed(1);
+  document.getElementById('sv1').textContent = genCanvases.length;
+  document.getElementById('sv2').textContent = W + '×' + H;
+  document.getElementById('sv3').textContent = elapsed + 's';
+  document.getElementById('statsBar').style.display = 'grid';
+  document.getElementById('progText').textContent = '✓ All ' + genCanvases.length + ' mockups ready!';
+  document.getElementById('dlBtn').style.display = 'flex';
+  document.getElementById('genBtn').disabled = false;
+}
+
+async function downloadZip() {
+  const btn = document.getElementById('dlBtn');
+  btn.disabled = true; btn.textContent = 'Creating ZIP...';
+  const zip = new JSZip();
+  const folder = zip.folder('FrameForge_Mockups');
+  for (let i = 0; i < genCanvases.length; i++) {
+    const b64 = genCanvases[i].canvas.toDataURL('image/jpeg', 0.92).split(',')[1];
+    folder.file('mockup_' + genCanvases[i].name + '.jpg', b64, { base64: true });
+    await new Promise(r => setTimeout(r, 0));
+  }
+  const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 3 } });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'FrameForge_Mockups.zip';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  btn.disabled = false;
+  btn.textContent = '↓ Download All as ZIP';
+}
 </script>
 </body>
 </html>
